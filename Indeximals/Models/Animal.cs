@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System.ComponentModel.DataAnnotations;
 
 namespace Indeximals.Models
 {
@@ -18,6 +20,7 @@ namespace Indeximals.Models
 
         [Required]
         [Display(Name = "Diet")]
+        [JsonConverter(typeof(StringEnumConverter))]
         public Diet Diet { get; set; }
     }
 }

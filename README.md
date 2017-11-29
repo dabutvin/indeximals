@@ -6,6 +6,13 @@ Indexing animals with blob storage
 
 You need a storage account and a search account in Azure.
 You can create both of these with zero cost :)
+Add an index called `index` to your search service and add the string fields we are using in our form
+These can all be string type and check all the boxes for searchable/retrievable/suggestable/etc
+ 
+ - id
+ - name
+ - sound
+ - diet
 
 ## Add secrets
 
@@ -13,7 +20,10 @@ Drop your secrets into a file in the root of the project called secrets.json
 
 ```
 {
-    "StorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=XXXXX;AccountKey=XXXXXXX;EndpointSuffix=core.windows.net"
+    "StorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=XXXXXXX;AccountKey=XXXXXXX;EndpointSuffix=core.windows.net",
+    "SearchAccountName": "XXXXXXXX",
+    "SearchAdminKey": "XXXXXXXXXX",
+    "SearchIndexName": "index"
 }
 ```
 
@@ -56,3 +66,7 @@ api-key: XXXXXXXXXXXXX
 ```
 
 You now have an existing data source for your search index you can see it in the portal.
+
+The 'List' view dumps all the blobs out of storage into a table
+
+The 'Query' view performs queries against the search index that is synced from these blobs

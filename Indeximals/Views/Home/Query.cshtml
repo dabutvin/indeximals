@@ -1,7 +1,41 @@
-﻿
+﻿@model Indeximals.Models.QueryViewModel
+
 @{
     ViewData["Title"] = "Query";
 }
 
 <h2>Query</h2>
 
+<form asp-controller="Home" asp-action="Query" method="get">
+    <div>
+        <label asp-for="Term"></label>
+        <input asp-for="Term" />
+    </div>
+    <div>
+    </div>
+</form>
+
+<hr />
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Sound</th>
+            <th>Diet</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var animal in Model.Animals)
+            {
+            <tr>
+                <td>@animal.Id</td>
+                <td>@animal.Name</td>
+                <td>@animal.Sound</td>
+                <td>@animal.Diet</td>
+            </tr>
+
+        }
+    </tbody>
+</table>

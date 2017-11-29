@@ -1,12 +1,11 @@
 ﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using Indeximals.Models;
-using Microsoft.WindowsAzure.Storage.Blob;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using System.Text;
-using Microsoft.WindowsAzure.Storage;
 using System.Linq;
+using System.Threading.Tasks;
+using Indeximals.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Search;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Newtonsoft.Json;
 
 namespace Indeximals.Controllers
 {
@@ -14,11 +13,13 @@ namespace Indeximals.Controllers
     {
         private readonly CloudBlobClient _cloudBlobClient;
         private readonly CloudBlobContainer _animalsContainer;
+        private readonly ISearchIndexClient _searchIndexClient;
 
-        public HomeController(CloudBlobClient cloudBlobClient)
+        public HomeController(CloudBlobClient cloudBlobClient, ISearchIndexClient searchIndexClient)
         {
             _cloudBlobClient = cloudBlobClient;
             _animalsContainer = _cloudBlobClient.GetContainerReference("animals");
+            _searchIndexClient = searchIndexClient;
         }
 
         public IActionResult Index()
@@ -54,9 +55,13 @@ namespace Indeximals.Controllers
                 .ToArray());
         }
 
-        public async Task<IActionResult> Query()
+        public async Task<IActionResult> Query(QueryViewModel model)
         {
-            return View();
+            var response = await _searchIndexClient.Documents.SearchAsync<Animal>(model.Term);
+
+            model.Animals = response.Results.Select(x => x.Document).ToArray();
+
+            return View(model);
         }
 
         public IActionResult Error()
