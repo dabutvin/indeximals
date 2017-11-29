@@ -1,0 +1,29 @@
+﻿@model Indeximals.Models.Animal[]
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Sound</th>
+            <th>Diet</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var animal in Model)
+        {
+            <tr>
+                <td>@animal.Id</td>
+                <td>@animal.Name</td>
+                <td>@animal.Sound</td>
+                <td>@animal.Diet</td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+

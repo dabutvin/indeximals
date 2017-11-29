@@ -1,0 +1,36 @@
+﻿@model Indeximals.Models.Animal
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="row">
+    <div class="col-md-9">
+        <form asp-controller="Home" asp-action="Create" method="post">
+            <div asp-validation-summary="All"></div>
+            <div>
+                <label asp-for="Id"></label>
+                <input asp-for="Id" />
+                <span asp-validation-for="Id"></span>
+            </div>
+            <div>
+                <label asp-for="Name"></label>
+                <input asp-for="Name" />
+                <span asp-validation-for="Name"></span>
+            </div>
+            <div>
+                <label asp-for="Sound"></label>
+                <input asp-for="Sound" />
+                <span asp-validation-for="Sound"></span>
+            </div>
+            <div>                
+                <label asp-for="Diet"></label>
+                <select asp-for="Diet"
+                        asp-items="Html.GetEnumSelectList<Diet>()">
+                </select> 
+                <span asp-validation-for="Diet"></span>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
