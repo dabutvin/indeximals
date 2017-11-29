@@ -2,17 +2,38 @@
 
 Indexing animals with blob storage
 
+## Provision
+
+You need a storage account and a search account in Azure.
+You can create both of these with zero cost :)
+
+## Add secrets
+
+Drop your secrets into a file in the root of the project called secrets.json
+
+```
+{
+    "StorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=XXXXX;AccountKey=XXXXXXX;EndpointSuffix=core.windows.net"
+}
+```
+
+## Create some data
+
+Navigate to the 'Create' page where you will see a form.
+Each form you submit will update a blob storage.
+The blob will be named <Id>.json and will be placed in a container called 'animals'
+
 ## Connect storage to search
 
 ```
-POST https://indeximals.search.windows.net/datasources?api-version=2016-09-01
+POST https://XXXXXX.search.windows.net/datasources?api-version=2016-09-01
 Content-Type: application/json
 api-key: XXXXXXXXXXXXX
 
 {
     "name" : "my-blob-datasource",
     "type" : "azureblob",
-    "credentials" : { "connectionString" : "DefaultEndpointsProtocol=https;AccountName=indeximals;AccountKey=XXXXXXXXXXXX;" },
+    "credentials" : { "connectionString" : "DefaultEndpointsProtocol=https;AccountName=XXXXXXX;AccountKey=XXXXXXXXXXXX;" },
     "container" : { "name" : "animals" }
 }   
 ```
@@ -21,7 +42,7 @@ Create an index in search to define schema that matches your blobs (portal or AP
 Minimum schedule for indexing is 5 minutes
 
 ```
-POST https://indeximals.search.windows.net/indexers?api-version=2016-09-01
+POST https://XXXXXXXXXX.search.windows.net/indexers?api-version=2016-09-01
 Content-Type: application/json
 api-key: XXXXXXXXXXXXX
 
