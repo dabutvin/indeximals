@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace Indeximals
 {
@@ -10,9 +11,18 @@ namespace Indeximals
             BuildWebHost(args).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+        public static IWebHost BuildWebHost(string[] args)
+        {
+            var builder = WebHost.CreateDefaultBuilder(args);
+
+            builder.ConfigureAppConfiguration((hostingContext, config) =>
+            {
+                config.AddJsonFile("secrets.json", optional: false, reloadOnChange: true);
+            });
+
+            return builder
                 .UseStartup<Startup>()
                 .Build();
+        }
     }
 }
