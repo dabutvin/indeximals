@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Indeximals.Models;
@@ -62,6 +63,18 @@ namespace Indeximals.Controllers
             model.Animals = response.Results.Select(x => x.Document).ToArray();
 
             return View(model);
+        }
+
+        public async Task<IActionResult> Suggest(string term)
+        {
+            if (string.IsNullOrEmpty(term))
+            {
+                return Json(null);
+            }
+
+            var suggestions = await _searchIndexClient.Documents.SuggestAsync<Animal>(term, "suggester");
+
+            return Json(suggestions.Results.Select(x => KeyValuePair.Create(x.Text, x.Document)));
         }
 
         public IActionResult Error()
