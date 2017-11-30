@@ -1,7 +1,7 @@
 ﻿@model Indeximals.Models.QueryViewModel
 
 @{
-    ViewData["Title"] = "Query";
+ViewData["Title"] = "Query";
 }
 
 <h2>Query</h2>
@@ -14,6 +14,12 @@
     <div>
     </div>
 </form>
+
+<div>
+    <label for="suggest">Suggest</label>
+    <input onkeyup="return suggest(this, event);" type="text" id="suggest" />
+    <ul id="suggestions"></ul>
+</div>
 
 <hr />
 
@@ -28,7 +34,7 @@
     </thead>
     <tbody>
         @foreach (var animal in Model.Animals)
-            {
+        {
             <tr>
                 <td>@animal.Id</td>
                 <td>@animal.Name</td>
@@ -39,3 +45,33 @@
         }
     </tbody>
 </table>
+
+<script>
+    function suggest(e) {
+        httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = newSuggestions;
+        httpRequest.open('GET', 'Suggest?term=' + e.value);
+        httpRequest.send();
+    }
+
+    function newSuggestions() {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+          if (httpRequest.status === 200 && httpRequest.responseText) {
+            var suggestions = JSON.parse(httpRequest.responseText);
+            var list = document.getElementById('suggestions');
+
+            list.innerHTML = '';
+            
+            if(suggestions && suggestions.length) {
+                for(var i = 0; i < suggestions.length; i++) {
+                    var item = document.createElement('li');
+                    item.innerText = suggestions[i].key;
+                    list.append(item);
+                }
+            }
+        } else {
+            alert('whoops');
+        }
+    }
+}
+</script>
